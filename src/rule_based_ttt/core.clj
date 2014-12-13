@@ -133,6 +133,8 @@
           (test-second prog (prog (move board p 'X))))))))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (println "Testing AI as first player")
+  (test-first basic)
+  (println "Testing AI as second player")
+  (test-second basic))
