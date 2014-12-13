@@ -1,6 +1,14 @@
 (ns rule-based-ttt.core
   (:gen-class))
 
+; board
+;
+;    0 1 2
+;    -----
+; 0 |
+; 1 |
+; 2 |
+
 (defn other [s]
   (if (= s 'X) 'O 'X))
 
@@ -68,12 +76,6 @@
 ; 1. win if self have two symbols in a row
 ; 2. block if opponent have two symbols in a row
 ; 3. else put in preference
-; board
-;    0 1 2
-;    -----
-; 0 |2 7 3
-; 1 |6 0 8
-; 2 |1 5 4
 (defn basic-prefs [s board prefs]
   (let [pos (for [x (range 0 3) y (range 0 3)] [x y])
         avail (filter #(nil? (get board %)) pos)
@@ -86,9 +88,15 @@
       (> (count block) 0) (move board (first block) s)
       (> (count pref) 0) (move board (first pref) s))))
 
+; 2 7 3
+; 6 0 8
+; 1 5 4
 (defn basic [s board]
   (basic-prefs s board [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
 
+; 3 7 2
+; 6 0 8
+; 1 5 4
 (defn basic2 [s board]
   (basic-prefs s board [[1 1] [2 0] [0 2] [0 0] [2 2] [2 1] [1 0] [0 1] [1 2]]))
 
@@ -115,6 +123,10 @@
 
 (defn gen-second [p]
   (gen-end-state (exhaust 'X) (lift p 'O) [{:move {}}]))
+
+(defn fail-count [p]
+  (+ (count (filter #(won 'O %) (gen-first p)))
+     (count (filter #(won 'X %) (gen-second p)))))
 
 (defn -main
   [& args]
