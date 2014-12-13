@@ -74,27 +74,23 @@
 ; 0 |2 7 3
 ; 1 |6 0 8
 ; 2 |1 5 4
-(defn basic [s board]
+(defn basic-prefs [s board prefs]
   (let [pos (for [x (range 0 3) y (range 0 3)] [x y])
         avail (filter #(nil? (get board %)) pos)
         t (other s)
         win (filter #(won s (move board % s)) avail)
-        block (filter #(won t (move board % t)) avail)]
+        block (filter #(won t (move board % t)) avail)
+        pref (filter #(nil? (get board %)) prefs)]
     (cond
       (> (count win) 0) (move board (first win) s)
       (> (count block) 0) (move board (first block) s)
-      :else
-        (condp = nil
-          (get board [1 1]) (move board [1 1] s)
-          (get board [2 0]) (move board [2 0] s)
-          (get board [0 0]) (move board [0 0] s)
-          (get board [0 2]) (move board [0 2] s)
-          (get board [2 2]) (move board [2 2] s)
-          (get board [2 1]) (move board [2 1] s)
-          (get board [1 0]) (move board [1 0] s)
-          (get board [0 1]) (move board [0 1] s)
-          (get board [1 2]) (move board [1 2] s)) 
-      )))
+      (> (count pref) 0) (move board (first pref) s))))
+
+(defn basic [s board]
+  (basic-prefs s board [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
+
+(defn basic2 [s board]
+  (basic-prefs s board [[1 1] [2 0] [0 2] [0 0] [2 2] [2 1] [1 0] [0 1] [1 2]]))
 
 ; lift a function p from board -> board to board -> [board]
 (defn lift [p s]
