@@ -1,4 +1,5 @@
 (ns rule-based-ttt.core
+  (:require [clojure.math.combinatorics :as combo])
   (:gen-class))
 
 ; board
