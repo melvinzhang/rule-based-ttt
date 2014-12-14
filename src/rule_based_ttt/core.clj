@@ -89,17 +89,29 @@
       (not-empty block) (move board (first block) s)
       :else (move board (first pref) s))))
 
-; 2 7 3
-; 6 0 8
-; 1 5 4
-(defn basic [s board]
-  (basic-prefs s board [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
+(defn arr-to-labeled-prefs [arr]
+  (for [r (range 0 3) c (range 0 3)]
+    [(get-in arr [r c]) [r c]]))
 
-; 3 7 2
-; 6 0 8
-; 1 5 4
+(defn arr-to-prefs [arr]
+  (->> arr
+       arr-to-labeled-prefs
+       sort
+       (map #(get % 1))))
+
+(defn basic [s board]
+  (basic-prefs s board 
+    (arr-to-prefs 
+      [[2 7 3]
+       [6 0 8]
+       [1 5 4]])))
+
 (defn basic2 [s board]
-  (basic-prefs s board [[1 1] [2 0] [0 2] [0 0] [2 2] [2 1] [1 0] [0 1] [1 2]]))
+  (basic-prefs s board 
+    (arr-to-prefs 
+      [[3 7 2] 
+       [6 0 8] 
+       [1 5 4]])))
 
 ; lift a function p from board -> board to board -> [board]
 (defn lift [p s]
