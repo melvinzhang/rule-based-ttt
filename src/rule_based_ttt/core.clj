@@ -134,7 +134,7 @@
 
 (defn gen-end-state [p1 p2 boards]
   (let [res (mapcat p1 boards)]
-    (if (= res boards) boards (gen-end-state p2 p1 (mapcat p1 boards)))))
+    (if (= res boards) boards (gen-end-state p2 p1 res))))
 
 (defn gen-first [p]
   (gen-end-state (lift p 'X) (exhaust 'O) [{:move {}}]))
@@ -185,7 +185,6 @@
 
 (defn -main
   [& args]
-  (doseq [x perms] 
-    (let [p (fn [s board] (basic-prefs s board x))
-          s (stats p)]
-      (println {:perm x :stats s}))))
+  (let [proc (fn [perm] {:perm perm :stats (stats (fn [s board] (basic-prefs s board perm)))})
+        res (pmap proc perms)]
+    (doseq [r res] (println r))))
