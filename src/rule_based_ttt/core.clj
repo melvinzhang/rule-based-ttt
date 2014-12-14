@@ -99,19 +99,19 @@
        sort
        (map #(get % 1))))
 
-(defn basic [s board]
-  (basic-prefs s board 
-    (arr-to-prefs 
-      [[2 7 3]
-       [6 0 8]
-       [1 5 4]])))
+(defn basic-arr-prefs [arr]
+  (fn [s board] (basic-prefs s board (arr-to-prefs arr))))
 
-(defn basic2 [s board]
-  (basic-prefs s board 
-    (arr-to-prefs 
-      [[3 7 2] 
-       [6 0 8] 
-       [1 5 4]])))
+(def basic (basic-arr-prefs
+  [[2 7 3]
+   [6 0 8]
+   [1 5 4]]))
+
+(def basic2 
+  (basic-arr-prefs
+  [[3 7 2]
+   [6 0 8]
+   [1 5 4]]))
 
 ; lift a function p from board -> board to board -> [board]
 (defn lift [p s]
