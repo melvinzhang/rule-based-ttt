@@ -148,12 +148,6 @@
 (defn gen-second-fail [p]
   (filter #(won 'X %) (gen-second p)))
 
-(defn fail-count [p]
-  (+ (count (filter #(won 'O %) (gen-first p)))
-     (count (filter #(won 'X %) (gen-second p)))))
-  
-(def perms (combo/permutations [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
-
 (defn show-first-fail [arr]
   (map show (gen-first-fail (basic-arr-prefs arr))))
 
@@ -182,6 +176,8 @@
     (println "win:" (get-in s [:as-second :win]))
     (println "lose:" (get-in s [:as-second :lose]))
     (println "draw:" (get-in s [:as-second :draw]))))
+
+(def perms (combo/permutations [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
 
 (defn -main
   [& args]
