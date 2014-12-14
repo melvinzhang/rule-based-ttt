@@ -158,6 +158,26 @@
 
 (def basic-fail (pmap fail-count basic-perms))
 
+(defn show-first-fail [arr]
+  (map show (gen-first-fail (basic-arr-prefs arr))))
+
+(defn show-second-fail [arr]
+  (map show (gen-second-fail (basic-arr-prefs arr))))
+
+(defn check [arr]
+  (let [p (basic-arr-prefs arr)
+        as-first (gen-first p)
+        as-second (gen-second p)]
+    (println "Testing AI as first player")
+    (println "win:" (count (filter #(won 'X %) as-first)))
+    (println "lose:" (count (filter #(won 'O %) as-first)))
+    (println "draw:" (count (filter #(not (or (won 'X %) (won 'O %))) as-first)))
+    (println "Testing AI as second player")
+    (println "win:" (count (filter #(won 'O %) as-second)))
+    (println "lose:" (count (filter #(won 'X %) as-second)))
+    (println "draw:" (count (filter #(not (or (won 'X %) (won 'O %))) as-second)))
+    ))
+
 (defn -main
   [& args]
   (println "Testing AI as first player")
