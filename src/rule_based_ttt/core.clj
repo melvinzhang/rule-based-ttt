@@ -152,11 +152,7 @@
   (+ (count (filter #(won 'O %) (gen-first p)))
      (count (filter #(won 'X %) (gen-second p)))))
   
-(def pref-perms (combo/permutations [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
-
-(def basic-perms (map #(fn [s board] (basic-prefs s board %)) pref-perms))
-
-(def basic-fail (pmap fail-count basic-perms))
+(def perms (combo/permutations [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
 
 (defn show-first-fail [arr]
   (map show (gen-first-fail (basic-arr-prefs arr))))
@@ -164,23 +160,32 @@
 (defn show-second-fail [arr]
   (map show (gen-second-fail (basic-arr-prefs arr))))
 
-(defn check [arr]
-  (let [p (basic-arr-prefs arr)
-        as-first (gen-first p)
+(defn stats [p]
+  (let [as-first (gen-first p)
         as-second (gen-second p)]
+    {:as-first 
+       {:win (count (filter #(won 'X %) as-first))
+        :lose (count (filter #(won 'O %) as-first))
+        :draw (count (filter #(not (or (won 'X %) (won 'O %))) as-first))}
+     :as-second
+       {:win (count (filter #(won 'O %) as-second))
+        :lose (count (filter #(won 'X %) as-second))
+        :draw (count (filter #(not (or (won 'X %) (won 'O %))) as-second))}}))
+
+(defn check [arr]
+  (let [s (stats (basic-arr-prefs arr))]
     (println "Testing AI as first player")
-    (println "win:" (count (filter #(won 'X %) as-first)))
-    (println "lose:" (count (filter #(won 'O %) as-first)))
-    (println "draw:" (count (filter #(not (or (won 'X %) (won 'O %))) as-first)))
+    (println "win:" (get-in s [:as-first :win]))
+    (println "lose:" (get-in s [:as-first :lose]))
+    (println "draw:" (get-in s [:as-first :draw]))
     (println "Testing AI as second player")
-    (println "win:" (count (filter #(won 'O %) as-second)))
-    (println "lose:" (count (filter #(won 'X %) as-second)))
-    (println "draw:" (count (filter #(not (or (won 'X %) (won 'O %))) as-second)))
-    ))
+    (println "win:" (get-in s [:as-second :win]))
+    (println "lose:" (get-in s [:as-second :lose]))
+    (println "draw:" (get-in s [:as-second :draw]))))
 
 (defn -main
   [& args]
-  (println "Testing AI as first player")
-  (map show (filter #(won 'O %) (gen-first basic)))
-  (println "Testing AI as second player")
-  (map show (filter #(won 'X %) (gen-second basic))))
+  (doseq [x perms] 
+    (let [p (fn [s board] (basic-prefs s board x))
+          s (stats p)]
+      (println {:perm x :stats s}))))
