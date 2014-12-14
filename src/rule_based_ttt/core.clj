@@ -85,9 +85,9 @@
         block (filter #(won t (move board % t)) avail)
         pref (filter #(nil? (get board %)) prefs)]
     (cond
-      (> (count win) 0) (move board (first win) s)
-      (> (count block) 0) (move board (first block) s)
-      (> (count pref) 0) (move board (first pref) s))))
+      (not-empty win) (move board (first win) s)
+      (not-empty block) (move board (first block) s)
+      :else (move board (first pref) s))))
 
 ; 2 7 3
 ; 6 0 8
@@ -111,9 +111,14 @@
     (if (done board)
       [board] 
       (let [pos (for [x (range 0 3) y (range 0 3)] [x y])
-            avail (filter #(nil? (get board %)) pos)]
-        (for [p avail]
-          (move board p s))))))
+            avail (filter #(nil? (get board %)) pos)
+            t (other s)
+            win (filter #(won s (move board % s)) avail)
+            block (filter #(won t (move board % t)) avail)]
+        (cond
+          (not-empty win) [(move board (first win) s)]
+          (not-empty block) [(move board (first block) s)]
+          :else (for [p avail] (move board p s)))))))
 
 (defn gen-end-state [p1 p2 boards]
   (let [res (mapcat p1 boards)]
@@ -124,6 +129,12 @@
 
 (defn gen-second [p]
   (gen-end-state (exhaust 'X) (lift p 'O) [{:move {}}]))
+
+(defn gen-first-fail [p]
+  (filter #(won 'O %) (gen-first p)))
+
+(defn gen-second-fail [p]
+  (filter #(won 'X %) (gen-second p)))
 
 (defn fail-count [p]
   (+ (count (filter #(won 'O %) (gen-first p)))
