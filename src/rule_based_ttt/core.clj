@@ -128,6 +128,12 @@
 (defn fail-count [p]
   (+ (count (filter #(won 'O %) (gen-first p)))
      (count (filter #(won 'X %) (gen-second p)))))
+  
+(def pref-perms (combo/permutations [[1 1] [2 0] [0 0] [0 2] [2 2] [2 1] [1 0] [0 1] [1 2]]))
+
+(def basic-perms (map #(fn [s board] (basic-prefs s board %)) pref-perms))
+
+(def basic-fail (pmap fail-count basic-perms))
 
 (defn -main
   [& args]
