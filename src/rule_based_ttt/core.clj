@@ -156,15 +156,25 @@
 
 (defn stats [p]
   (let [as-first (gen-first p)
-        as-second (gen-second p)]
-    {:as-first 
-       {:win (count (filter #(won 'X %) as-first))
-        :lose (count (filter #(won 'O %) as-first))
-        :draw (count (filter #(not (or (won 'X %) (won 'O %))) as-first))}
+        as-second (gen-second p)
+        win-first   (count (filter #(won 'X %) as-first))
+        lose-first  (count (filter #(won 'O %) as-first))  
+        draw-first  (- (count as-first) win-first lose-first)
+        win-second  (count (filter #(won 'O %) as-second)) 
+        lose-second (count (filter #(won 'X %) as-second)) 
+        draw-second (- (count as-second) win-second lose-second)]
+    {:total
+      {:win (+ win-first win-second)
+       :lose (+ lose-first lose-second)
+       :draw (+ draw-first draw-second)}
+     :as-first 
+      {:win win-first
+       :lose lose-first 
+       :draw draw-first}
      :as-second
-       {:win (count (filter #(won 'O %) as-second))
-        :lose (count (filter #(won 'X %) as-second))
-        :draw (count (filter #(not (or (won 'X %) (won 'O %))) as-second))}}))
+      {:win win-second
+       :lose lose-second
+       :draw draw-second}}))
 
 (defn check [arr]
   (let [s (stats (basic-arr-prefs arr))]
