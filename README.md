@@ -37,7 +37,10 @@ rule-based-ttt/check takes as input a matrix representing rules 3 - 11 and
 output the number of win/lose/draw games against a player which tries all
 possible moves.
 
+Requires: [leiningen](http://leiningen.org/)
+
 ```
+lein repl
 => (check [[2 9 3] [7 5 8] [1 6 4]])
 Testing AI as first player
 win: 9
