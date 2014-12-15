@@ -1,6 +1,7 @@
-# Preference based Tic Tac Toe AI programs
+# Analysis of Simple Tic Tac Toe AIs
 
 Consider a class of Tic Tac Toe AI that follows the following rules and executes the first one that applies
+
 1. win if I have two symbols in a row
 2. block if opponent has two symbols in a row
 4. place in the lower left corner
