@@ -55,7 +55,7 @@
 (defn done [board]
   (or (won 'X board)
       (won 'O board)
-      (= (count board) 9)))
+      (= (count (board :move)) 9)))
 
 (defn show [board]
   (let [moves (:move board)]
