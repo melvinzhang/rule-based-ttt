@@ -1,5 +1,6 @@
 (ns rule-based-ttt.core
-  (:require [clojure.math.combinatorics :as combo])
+  (:require [clojure.math.combinatorics :as combo]
+            [clojure.edn :as edn])
   (:gen-class))
 
 ; board
@@ -194,3 +195,7 @@
   (let [proc (fn [perm] {:perm perm :stats (stats (fn [s board] (basic-prefs s board perm)))})
         res (pmap proc perms)]
     (doseq [r res] (println r))))
+
+(defn read-stats []
+  (for [line (clojure.string/split (slurp "stats.edn") #"\n")]
+    (edn/read-string line)))
