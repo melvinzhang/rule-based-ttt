@@ -133,15 +133,20 @@
           (not-empty block) [(move board (first block) s)]
           :else (for [p avail] (move board p s)))))))
 
-(defn gen-end-state [p1 p2 boards]
-  (let [res (mapcat p1 boards)]
-    (if (= res boards) boards (gen-end-state p2 p1 res))))
+(defn gen-end-tree [p1 p2 board]
+  (if (done board) 
+    board
+    (for [b (p1 board)]
+      (gen-end-tree p2 p1 b))))
+
+(defn gen-end-state [p1 p2 board]
+  (flatten (gen-end-tree p1 p2 board)))
 
 (defn gen-first [p]
-  (gen-end-state (lift p 'X) (exhaust 'O) [{:move {}}]))
+  (gen-end-state (lift p 'X) (exhaust 'O) {:move {}}))
 
 (defn gen-second [p]
-  (gen-end-state (exhaust 'X) (lift p 'O) [{:move {}}]))
+  (gen-end-state (exhaust 'X) (lift p 'O) {:move {}}))
 
 (defn gen-first-fail [p]
   (filter #(won 'O %) (gen-first p)))
