@@ -1,9 +1,11 @@
 # Analysis of Simple Tic Tac Toe AIs
-Code for the "Design your own Tic-Tac-Toe AI activity" developed during the Hour of Code SG event at the Singapore Science Center. Participants code their own AI (by giving a preference order for each square) and we will try to play against it and discover its strengths and weakness.
+Code for the "Design your own Tic-Tac-Toe AI activity" developed during the Hour of Code SG 2014, held at the Singapore Science Center.
 
-Finally we show how programs can be used to automate the tedious task of testing the AI. We'll use the code in the repo to find counterplays and quantitatively compute the strength of the AI.
+Participants code their own AI (by giving a preference order for each square) and we will play against it and discover its strengths and weakness.
 
-The code can also be used to enumerate all 9! possible programs. There are some interesting ones, such as [[2 6 8] [5 9 1] [3 4 7]] that has only one way to beat it when it plays as first player.
+Then we show how programs can be used to automate the tedious task of testing the AI. We'll use the code in the repo to find counterplays and quantitatively compute the strength of the AI.
+
+The code can also be used to enumerate all 9! possible programs. There are some interesting ones, such as [[2 6 8] [5 9 1] [3 4 7]], that only has a single way to win it when it goes first.
 
 # Model for a simple Tic Tac Toe AI
 Consider a class of Tic Tac Toe AI that follows the following rules and executes the first one that applies
