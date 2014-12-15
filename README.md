@@ -26,8 +26,8 @@ Rules 3 - 11 can be represented as follows:
 ```
 Rules 1 and 2 are fixed, but rules 3 - 11 can be reorderd. There are a total of 9! (362880) different AIs.
 
-The rule-based-ttt/check takes as input a matrix representing rules 3 - 11 and
-determines the number of win/lose/draw games against a player which tries all
+rule-based-ttt/check takes as input a matrix representing rules 3 - 11 and
+output the number of win/lose/draw games against a player which tries all
 possible moves.
 
 ```
